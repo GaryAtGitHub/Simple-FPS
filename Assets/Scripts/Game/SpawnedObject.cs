@@ -48,4 +48,14 @@ public class SpawnedObject : BaseInteractable
             _UI.transform.rotation = Quaternion.LookRotation(_UI.transform.position - _MainCam.transform.position);
         }       
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Destroy when hit by bullet
+        if (collision.collider.CompareTag("Bullet"))
+        {
+            Destroy(collision.transform.gameObject);
+            Destroy(gameObject);
+        }
+    }
 }

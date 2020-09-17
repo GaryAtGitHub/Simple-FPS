@@ -7,24 +7,19 @@ public class PlayerFPSController : MonoBehaviour
 {
     public Action OnSpacePress;
     public Action OnQPress;
-
     public Camera PlayerCamera;
     public Rigidbody PlayerRigidbody;
     public float MovementSpeed = 10;
     public float MouseSpeed = 10;
 
+
     private void Awake()
     {
         PlayerCamera = PlayerCamera ? PlayerCamera : GetComponentInChildren<Camera>();
-        PlayerRigidbody = PlayerRigidbody ? PlayerRigidbody : GetComponentInChildren<Rigidbody>();
+        PlayerRigidbody = PlayerRigidbody ? PlayerRigidbody : GetComponentInChildren<Rigidbody>();       
         PlayerRigidbody.constraints = ~(RigidbodyConstraints.FreezeAll & RigidbodyConstraints.FreezePositionY);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-    }
-
-    void Start()
-    {
-        
     }
 
     void Update()

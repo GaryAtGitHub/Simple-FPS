@@ -12,6 +12,9 @@ public class Pointer : MonoBehaviour
     public CursorColorManager CCManager;
     // A layermask for changing cursor color
     public LayerMask ValidLayer;
+    public Transform FireTransform;
+    public GameObject Bullet;
+    public float BulletVelocity;
 
     [SerializeField]
     private Camera _MainCamera;
@@ -22,6 +25,7 @@ public class Pointer : MonoBehaviour
     void Start()
     {
         _MainCamera = _MainCamera ? _MainCamera : Camera.main;
+        //FirePoint = FireTransform ? FireTransform.position : _MainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, _MainCamera.nearClipPlane));
     }
 
     void Update()
@@ -71,6 +75,12 @@ public class Pointer : MonoBehaviour
             CCManager.ShowCross(false);
         }
 
+
+        if (Input.GetKeyUp("f"))
+        {
+            GameObject go = Instantiate(Bullet, FireTransform.position, Quaternion.LookRotation(_RayFromScreen.direction));
+            go.GetComponent<Rigidbody>().velocity = _RayFromScreen.direction * BulletVelocity;
+        }
 
     }
 }

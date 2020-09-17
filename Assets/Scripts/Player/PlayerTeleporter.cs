@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerTeleporter : MonoBehaviour
 {
-    public Action<Vector3> OnTeleportFinish;
+    public Action<Vector3,Vector3> OnTeleportFinish;
 
     // distance of Player transform to the feet
     public float PlayerHeightOffSet;
@@ -51,7 +51,7 @@ public class PlayerTeleporter : MonoBehaviour
                 {
                     // Teleport to the cusor poinint position with height offset
                     StopAllCoroutines();
-                    StartCoroutine(StartTeleporting(hit.point));
+                    StartCoroutine(StartTeleporting(hit.point, hit.normal));
                 }
             }
             else
@@ -70,7 +70,7 @@ public class PlayerTeleporter : MonoBehaviour
         TeleportIndicator.SetActive(false);
     }
 
-    IEnumerator StartTeleporting(Vector3 destination)
+    IEnumerator StartTeleporting(Vector3 destination, Vector3 normal)
     {
         Vector3 offSetDestination = new Vector3(destination.x, destination.y + PlayerHeightOffSet, destination.z);
         Vector3 direction = offSetDestination - transform.position;
@@ -81,6 +81,6 @@ public class PlayerTeleporter : MonoBehaviour
             direction = offSetDestination - transform.position;
             yield return null;
         }
-        OnTeleportFinish?.Invoke(destination);
+        OnTeleportFinish?.Invoke(destination, normal);
     }
 }

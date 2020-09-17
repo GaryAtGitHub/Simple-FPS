@@ -27,9 +27,9 @@ public class ObjectSpawner : MonoBehaviour
         PlayerController.OnQPress -= DeleteSpawned;
     }
 
-    private void SpawnObject(Vector3 position)
+    private void SpawnObject(Vector3 position, Vector3 normal)
     {
-        GameObject go = Instantiate(SpawnedObject, position, Quaternion.identity);
+        GameObject go = Instantiate(SpawnedObject, position, Quaternion.FromToRotation(Vector3.up, normal));
         go.transform.parent = transform;
         SetRandomColor(go);
         go.AddComponent<SpawnedObject>().OnDelete += RemoveFromList;
@@ -38,9 +38,14 @@ public class ObjectSpawner : MonoBehaviour
 
     private void ChangeColors()
     {
+        _Gos.RemoveAll(go => go == null);
+        Debug.Log(_Gos.Count);
         foreach (GameObject go in _Gos)
         {
-            SetRandomColor(go);
+            if (go != null)
+            {
+                SetRandomColor(go);
+            }
         }
     }
 
