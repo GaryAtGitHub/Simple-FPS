@@ -39,7 +39,6 @@ public class ObjectSpawner : MonoBehaviour
     private void ChangeColors()
     {
         _Gos.RemoveAll(go => go == null);
-        Debug.Log(_Gos.Count);
         foreach (GameObject go in _Gos)
         {
             if (go != null)

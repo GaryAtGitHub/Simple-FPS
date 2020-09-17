@@ -9,7 +9,7 @@ public class CursorColorManager : MonoBehaviour
     public Color ValidColor;
 
     [SerializeField]
-    private GameObject Cross;
+    private GameObject Cross = null;
 
     private Color _DefaultColor;
     private bool ValidStatus;
@@ -34,7 +34,7 @@ public class CursorColorManager : MonoBehaviour
 
     public void ShowCross(bool value = true)
     {
-        Cross.SetActive(value);
+        Cross?.SetActive(value);
     }
 
     void Start()

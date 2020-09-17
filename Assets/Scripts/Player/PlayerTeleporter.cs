@@ -15,7 +15,7 @@ public class PlayerTeleporter : MonoBehaviour
     public GameObject TeleportIndicator;
 
     [SerializeField]
-    private float TeletportSpeed;
+    private float TeletportSpeed = 20;
     
     void Start()
     {
