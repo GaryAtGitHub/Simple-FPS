@@ -16,6 +16,8 @@ public class Pointer : MonoBehaviour
     [SerializeField]
     private Camera _MainCamera;
     private Ray _RayFromScreen;
+    // The interactable object the pointer is hovering
+    private BaseInteractable _InteractableHovering;
 
     void Start()
     {
@@ -29,7 +31,7 @@ public class Pointer : MonoBehaviour
         if (Physics.Raycast(_RayFromScreen, out RaycastHit hit))
         {
 
-            // Compare layer mask with layer of hit object
+            // Compare layer mask with layer of hit object. Change color if its layer is in the valid mask
             if ((1 << hit.transform.gameObject.layer & ValidLayer.value) != 0)
             {
                 CCManager.ColorToValid();
@@ -40,11 +42,33 @@ public class Pointer : MonoBehaviour
             }
 
             OnRaycastHit?.Invoke(hit);
+
+            _InteractableHovering = hit.collider.GetComponentInParent<BaseInteractable>();
+            if (_InteractableHovering != null)
+            {
+                CCManager.ShowCross();
+
+                if (Input.GetMouseButtonUp(1))
+                {
+                    _InteractableHovering.OnRightClick();
+                }
+
+                if(Input.GetMouseButtonUp(0))
+                {
+                    _InteractableHovering.OnLeftClick();
+                }
+            }
+            else
+            {
+                CCManager.ShowCross(false);
+            }
         }
         else
         {
             CCManager.ColorToDefault();
             OnRaycastMiss?.Invoke();
+            _InteractableHovering = null;
+            CCManager.ShowCross(false);
         }
 
 

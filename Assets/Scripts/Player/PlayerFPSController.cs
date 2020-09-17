@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerFPSController : MonoBehaviour
 {
     public Action OnSpacePress;
+    public Action OnQPress;
 
     public Camera PlayerCamera;
     public Rigidbody PlayerRigidbody;
@@ -55,6 +56,11 @@ public class PlayerFPSController : MonoBehaviour
         if (Input.GetKeyUp("space"))
         {
             OnSpacePress?.Invoke();
+        }
+
+        if (Input.GetKeyUp("q"))
+        {
+            OnQPress?.Invoke();
         }
     }
 }

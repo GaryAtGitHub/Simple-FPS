@@ -4,17 +4,12 @@ using UnityEngine;
 
 public abstract class BaseInteractable : MonoBehaviour
 {
-    public virtual void OnHoverEnter()
+    public virtual void OnLeftClick()
     {
 
     }
 
-    public virtual void OnHoverExit()
-    {
-
-    }
-
-    public virtual void OnInteract()
+    public virtual void OnRightClick()
     {
 
     }

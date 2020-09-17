@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 public class CursorColorManager : MonoBehaviour
 {
-    public Image Cursor;
+    public Image NormalCursor;
     public Color ValidColor;
+
+    [SerializeField]
+    private GameObject Cross;
 
     private Color _DefaultColor;
     private bool ValidStatus;
@@ -15,7 +18,7 @@ public class CursorColorManager : MonoBehaviour
     {
         if (!ValidStatus)
         {
-            Cursor.color = ValidColor;
+            NormalCursor.color = ValidColor;
             ValidStatus = true;
         }        
     }
@@ -24,15 +27,20 @@ public class CursorColorManager : MonoBehaviour
     {
         if (ValidStatus)
         {
-            Cursor.color = _DefaultColor;
+            NormalCursor.color = _DefaultColor;
             ValidStatus = false;
         }        
     }
 
+    public void ShowCross(bool value = true)
+    {
+        Cross.SetActive(value);
+    }
+
     void Start()
     {
-        Cursor = Cursor ? Cursor : GetComponent<Image>();
-        _DefaultColor = Cursor.color;
+        NormalCursor = NormalCursor ? NormalCursor : GetComponent<Image>();
+        _DefaultColor = NormalCursor.color;
     }
     
 }
