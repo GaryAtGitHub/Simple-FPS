@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerFPSController : MonoBehaviour
 {
+    public Action OnSpacePress;
+
     public Camera PlayerCamera;
     public Rigidbody PlayerRigidbody;
     public float MovementSpeed = 10;
@@ -48,5 +51,10 @@ public class PlayerFPSController : MonoBehaviour
         }
 
         PlayerCamera.transform.rotation = Quaternion.Euler(Mathf.Clamp(newAngleX, -80, 80), PlayerCamera.transform.eulerAngles.y, PlayerCamera.transform.eulerAngles.z);
+
+        if (Input.GetKeyUp("space"))
+        {
+            OnSpacePress?.Invoke();
+        }
     }
 }

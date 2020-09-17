@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerTeleporter : MonoBehaviour
 {
+    public Action<Vector3> OnTeleportFinish;
+
     // distance of Player transform to the feet
     public float PlayerHeightOffSet;
     public PlayerFPSController FpsController;
@@ -21,11 +24,13 @@ public class PlayerTeleporter : MonoBehaviour
         FpsController = FpsController ? FpsController : GetComponentInChildren<PlayerFPSController>();
         PlayerPointer = PlayerPointer ? PlayerPointer : GetComponentInChildren<Pointer>();
         PlayerPointer.OnRaycastHit += CheckTelePort;
+        PlayerPointer.OnRaycastMiss += ClearIndicator;
     }
 
     private void OnDestroy()
     {
         PlayerPointer.OnRaycastHit -= CheckTelePort;
+        PlayerPointer.OnRaycastMiss -= ClearIndicator;
     }
 
     private void CheckTelePort(RaycastHit hit)
@@ -40,24 +45,29 @@ public class PlayerTeleporter : MonoBehaviour
                     TeleportIndicator.SetActive(true);
                 }
                 TeleportIndicator.transform.position = hit.point;
+
+                TeleportIndicator.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                if (Input.GetMouseButton(0))
+                {
+                    // Teleport to the cusor poinint position with height offset
+                    StopAllCoroutines();
+                    StartCoroutine(StartTeleporting(hit.point));
+                }
             }
             else
             {
                 TeleportIndicator.SetActive(false);
-            }
-
-            TeleportIndicator.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-            if (Input.GetMouseButton(0))
-            {
-                // Teleport to the cusor poinint position with height offset
-                StopAllCoroutines();
-                StartCoroutine(StartTeleporting(hit.point));
             }
         }
         else
         {
             TeleportIndicator.SetActive(false);
         }
+    }
+
+    private void ClearIndicator()
+    {
+        TeleportIndicator.SetActive(false);
     }
 
     IEnumerator StartTeleporting(Vector3 destination)
@@ -71,5 +81,6 @@ public class PlayerTeleporter : MonoBehaviour
             direction = offSetDestination - transform.position;
             yield return null;
         }
+        OnTeleportFinish?.Invoke(destination);
     }
 }

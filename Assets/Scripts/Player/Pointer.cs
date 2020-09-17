@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Pointer : MonoBehaviour
 {
     public Action<RaycastHit> OnRaycastHit;
+    public Action OnRaycastMiss;
     public Image Cursor;
     public CursorColorManager CCManager;
     // A layermask for changing cursor color
@@ -39,6 +40,11 @@ public class Pointer : MonoBehaviour
             }
 
             OnRaycastHit?.Invoke(hit);
+        }
+        else
+        {
+            CCManager.ColorToDefault();
+            OnRaycastMiss?.Invoke();
         }
 
 
